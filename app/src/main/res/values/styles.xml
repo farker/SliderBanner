@@ -1,0 +1,21 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <declare-styleable name="DotView">
+        <attr name="dot_radius" format="dimension" />
+        <attr name="dot_span" format="dimension" />
+        <attr name="dot_unselected_color" format="integer" />
+        <attr name="dot_selected_color" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="SliderBanner">
+        <attr name="slider_banner_indicator" format="reference" />
+        <attr name="slider_banner_pager" format="reference" />
+        <attr name="slider_banner_time_interval" format="integer" />
+    </declare-styleable>
+
+</resources>
