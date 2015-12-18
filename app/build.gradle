@@ -10,16 +10,81 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        //不同开发环境配置不同的域名
+        buildConfigField 'String', 'API_SERVER_URL', '"http://com.sheng./"'
+
+        //重命名Apk名称
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def outputFile = output.outputFile
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                    // 定义apk名称，如xmdj_xlxl_1.0.Apk
+//                    def fileName = "xmdj${variant.productFlavors[0].name}_${defaultConfig.versionName}.apk"
+                    def fileName = outputFile.name.replace(".apk", "_${variant.versionName}.apk")
+                    output.outputFile = new File(outputFile.parent, fileName)
+                }
+            }
+        }
     }
+
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            files getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // 移除无用的resource文件
+            shrinkResources true
         }
+        beta {
+            //不同开发环境配置不同的域名
+            buildConfigField 'String', 'API_SERVER_URL', '"http://beta.com.sheng./"'
+        }
+        alpha {
+            //不同开发环境配置不同的域名
+            buildConfigField 'String', 'API_SERVER_URL', '"http://alpha.com.sheng./"'
+        }
+        dev {
+            //不同开发环境配置不同的域名
+            buildConfigField 'String', 'API_SERVER_URL', '"http://dev.com.sheng./"'
+        }
+    }
+
+    productFlavors {
+        _xlxl {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "000"]
+        }
+        _360 {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "100"]
+        }
+        _baidu {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "101"]
+        }
+        _wdj {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "102"]
+        }
+        _yyb {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "103"]
+        }
+        _xm {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "105"]
+        }
+//        _dev {
+//            applicationId 'com.sheng.sliderbannerdev'
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "000"]
+//        }
+//        _alpha {
+//            applicationId 'com.sheng.sliderbanneralpha'
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "000"]
+//        }
+//        _beta {
+//            applicationId 'com.sheng.sliderbannerbeta'
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "000"]
+//        }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.1.1'
 }
